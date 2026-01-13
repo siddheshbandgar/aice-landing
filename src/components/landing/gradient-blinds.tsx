@@ -34,8 +34,27 @@ export default function GradientBlinds({
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [smoothMousePos, setSmoothMousePos] = useState({ x: 0.5, y: 0.5 });
+  const [time, setTime] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  // Set mounted state after hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Subtle autonomous animation - only runs after mount
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const interval = setInterval(() => {
+      setTime((t) => t + 0.02);
+    }, 50);
+    return () => clearInterval(interval);
+  }, [mounted]);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const handleMouseMove = (e: MouseEvent) => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
@@ -48,9 +67,11 @@ export default function GradientBlinds({
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const animate = () => {
       setSmoothMousePos((prev) => ({
         x: prev.x + (mousePos.x - prev.x) * mouseDampening,
@@ -60,7 +81,7 @@ export default function GradientBlinds({
 
     const interval = setInterval(animate, 16);
     return () => clearInterval(interval);
-  }, [mousePos, mouseDampening]);
+  }, [mousePos, mouseDampening, mounted]);
 
   const blinds = Array.from({ length: blindCount }, (_, i) => {
     const progress = i / (blindCount - 1);
@@ -79,14 +100,16 @@ export default function GradientBlinds({
       1 - distance / (spotlightRadius * spotlightSoftness)
     );
     
-    const baseOpacity = 0.3 + spotlightIntensity * spotlightOpacity * 0.7;
+    // Add subtle wave animation (only after mount)
+    const waveOffset = mounted ? Math.sin(time + i * 0.3) * 0.08 : 0;
+    const baseOpacity = 0.25 + spotlightIntensity * spotlightOpacity * 0.75 + waveOffset;
 
     // Determine gradient direction based on shineDirection
     let gradientAngle = angle;
     if (shineDirection === "left") {
-      gradientAngle = angle + progress * 10;
+      gradientAngle = angle + progress * 15 + (mounted ? Math.sin(time * 0.5) * 3 : 0);
     } else if (shineDirection === "right") {
-      gradientAngle = angle - progress * 10;
+      gradientAngle = angle - progress * 15 - (mounted ? Math.sin(time * 0.5) * 3 : 0);
     }
 
     return (
@@ -95,10 +118,10 @@ export default function GradientBlinds({
         className="h-full"
         style={{
           width,
-          opacity: baseOpacity,
+          opacity: Math.max(0.15, Math.min(1, baseOpacity)),
           background: `linear-gradient(${gradientAngle}deg, ${gradientColors.join(", ")})`,
           transform: `translateY(${distortion}px)`,
-          transition: "opacity 0.3s ease-out",
+          transition: "opacity 0.4s ease-out",
           mixBlendMode: mixBlendMode as any,
         }}
       />
@@ -130,4 +153,3 @@ export default function GradientBlinds({
     </div>
   );
 }
-

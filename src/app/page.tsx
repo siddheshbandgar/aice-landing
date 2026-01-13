@@ -57,34 +57,63 @@ export default function LandingPage() {
         />
       </div>
 
+      {/* Ambient glow effects */}
+      <div 
+        className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full z-5 animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(20, 82, 128, 0.15) 0%, transparent 70%)',
+          animationDuration: '4s',
+        }}
+      />
+      <div 
+        className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full z-5 animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(26, 74, 110, 0.12) 0%, transparent 70%)',
+          animationDuration: '5s',
+          animationDelay: '1s',
+        }}
+      />
+
       {/* Main content */}
       <div className="min-h-screen relative z-30 max-w-3xl mx-auto flex flex-col items-center justify-center text-center px-6 py-16 pointer-events-none">
         
-        {/* Logo */}
-        <div className="mb-12">
+        {/* Logo - with animation */}
+        <div 
+          className="mb-12 animate-fade-in"
+          style={{ animationDelay: '0.1s' }}
+        >
           <img 
             src="/aice-logo.png" 
             alt="AICE" 
-            className="w-[72px] h-[72px] rounded-[18px]"
+            className="w-[72px] h-[72px] rounded-[18px] shadow-2xl shadow-blue-500/20"
           />
         </div>
 
-        {/* Headline */}
-        <h1 className="text-[42px] sm:text-[56px] md:text-[72px] font-semibold text-white leading-[1.05] tracking-[-0.035em] mb-7">
+        {/* Headline - with animation */}
+        <h1 
+          className="text-[42px] sm:text-[56px] md:text-[72px] font-semibold text-white leading-[1.05] tracking-[-0.035em] mb-7 animate-fade-in-up"
+          style={{ animationDelay: '0.2s' }}
+        >
           Master AI.
           <br />
           Stay Ahead.
         </h1>
 
-        {/* Subheadline */}
-        <p className="text-[17px] sm:text-[19px] text-[#8a8a9a] max-w-[480px] mx-auto mb-11 leading-[1.6] tracking-[-0.015em] font-light">
+        {/* Subheadline - with animation */}
+        <p 
+          className="text-[17px] sm:text-[19px] text-[#8a8a9a] max-w-[480px] mx-auto mb-11 leading-[1.6] tracking-[-0.015em] font-light animate-fade-in-up"
+          style={{ animationDelay: '0.35s' }}
+        >
           Weekly newsletter with the latest AI tools, practical tips, and exclusive course updates. 
           Join <span className="text-[#b8b8c8] font-normal">10,000+ professionals</span> leveling up with AI.
         </p>
 
-        {/* Email signup form */}
+        {/* Email signup form - with animation */}
         {!isSubmitted ? (
-          <div className="w-full max-w-[420px] mx-auto space-y-5 pointer-events-auto">
+          <div 
+            className="w-full max-w-[420px] mx-auto space-y-5 pointer-events-auto animate-fade-in-up"
+            style={{ animationDelay: '0.5s' }}
+          >
             <form
               onSubmit={handleJoinNewsletter}
               className="flex flex-col sm:flex-row gap-3"
@@ -95,12 +124,12 @@ export default function LandingPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 h-[52px] bg-white/[0.04] border-white/[0.08] text-white placeholder:text-[#5a5a6a] rounded-[10px] focus:border-white/20 focus:ring-0 text-[15px] tracking-[-0.01em] font-light"
+                className="flex-1 h-[52px] bg-white/[0.04] border-white/[0.08] text-white placeholder:text-[#5a5a6a] rounded-[10px] focus:border-blue-400/50 focus:ring-0 text-[15px] tracking-[-0.01em] font-light transition-all duration-300"
               />
               <Button 
                 type="submit" 
                 disabled={isLoading}
-                className="h-[52px] px-8 bg-white hover:bg-[#f0f0f0] text-[#0a0a0a] font-medium rounded-[10px] transition-colors duration-150 text-[15px] tracking-[-0.01em]"
+                className="h-[52px] px-8 bg-white hover:bg-[#f0f0f0] text-[#0a0a0a] font-medium rounded-[10px] transition-all duration-200 text-[15px] tracking-[-0.01em] hover:scale-[1.02] active:scale-[0.98]"
               >
                 {isLoading ? "Subscribing..." : "Subscribe"}
               </Button>
@@ -110,7 +139,9 @@ export default function LandingPage() {
             </p>
           </div>
         ) : (
-          <div className="w-full max-w-[420px] mx-auto p-7 bg-white/[0.03] border border-white/[0.06] rounded-[14px] pointer-events-auto">
+          <div 
+            className="w-full max-w-[420px] mx-auto p-7 bg-white/[0.03] border border-white/[0.06] rounded-[14px] pointer-events-auto animate-scale-in"
+          >
             <p className="text-white font-medium text-[18px] mb-2 tracking-[-0.02em]">
               You're in.
             </p>
@@ -120,8 +151,11 @@ export default function LandingPage() {
           </div>
         )}
 
-        {/* Footer */}
-        <div className="absolute bottom-8 left-0 right-0 text-[#3a3a4a] text-[12px] tracking-[0.02em] font-light uppercase">
+        {/* Footer - with animation */}
+        <div 
+          className="absolute bottom-8 left-0 right-0 text-[#3a3a4a] text-[12px] tracking-[0.02em] font-light uppercase animate-fade-in"
+          style={{ animationDelay: '0.7s' }}
+        >
           © 2026 AICE
         </div>
       </div>

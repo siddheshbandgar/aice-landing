@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: "AICE - Master AI. Stay Ahead.",
   description: "Join 10,000+ learners getting weekly AI insights. Discover cutting-edge tools, practical tips, and courses that move the needle on your AI journey.",
   keywords: ["AI", "artificial intelligence", "AI courses", "AI newsletter", "machine learning", "AI tools", "AI tutorials"],
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
