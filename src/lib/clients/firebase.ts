@@ -29,7 +29,7 @@ if (typeof window !== "undefined") {
 
 // Initialize Firebase
 let app;
-let db;
+let db: ReturnType<typeof getFirestore> | undefined;
 
 try {
   app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
@@ -41,6 +41,7 @@ try {
       "💡 Make sure you've created .env.local with your Firebase credentials"
     );
   }
+  db = undefined;
 }
 
 export { app, db };

@@ -33,6 +33,11 @@ export default function LandingPage() {
 
     setIsLoading(true);
     try {
+      // Check if Firebase is initialized
+      if (!db) {
+        throw new Error("Firebase not initialized. Check your .env.local file and restart the server.");
+      }
+
       // Collect comprehensive user data
       const userData = await collectUserData(email, "landing_page");
       
@@ -50,14 +55,35 @@ export default function LandingPage() {
         },
       };
 
+      // Remove undefined values (Firestore doesn't like them)
+      const cleanData = JSON.parse(JSON.stringify(finalUserData));
+
       // Save to Firestore (using email as document ID)
-      await setDoc(doc(db, "newsletter_subscribers", email), finalUserData);
+      await setDoc(doc(db, "newsletter_subscribers", email), cleanData);
       
       setIsSubmitted(true);
       toast.success("Successfully subscribed to AICE!");
     } catch (error) {
       console.error("Error subscribing:", error);
-      toast.error("Failed to subscribe. Please try again.");
+      
+      // Show detailed error in console
+      const firebaseError = error as { code?: string; message?: string };
+      if (firebaseError.code) {
+        console.error("Firebase error code:", firebaseError.code);
+        console.error("Firebase error message:", firebaseError.message);
+      }
+      
+      // User-friendly error message
+      let errorMessage = "Failed to subscribe. Please try again.";
+      if (firebaseError.code === "permission-denied") {
+        errorMessage = "Permission denied. Check Firestore rules.";
+      } else if (firebaseError.code === "unavailable") {
+        errorMessage = "Service unavailable. Check your internet connection.";
+      } else if (firebaseError.message?.includes("Firebase not initialized")) {
+        errorMessage = "Firebase not configured. Check .env.local file.";
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
