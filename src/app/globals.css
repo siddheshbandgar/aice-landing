@@ -119,8 +119,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    background-color: black;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
+    overflow-x: hidden;
   }
 }
 
@@ -137,11 +141,13 @@
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
+    filter: blur(10px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
@@ -156,16 +162,264 @@
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(82, 39, 255, 0.4), 0 0 40px rgba(100, 13, 95, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(82, 39, 255, 0.6), 0 0 60px rgba(100, 13, 95, 0.5);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes border-glow {
+  0%, 100% {
+    border-color: rgba(82, 39, 255, 0.5);
+    box-shadow: 0 0 15px rgba(82, 39, 255, 0.2);
+  }
+  50% {
+    border-color: rgba(100, 13, 95, 0.7);
+    box-shadow: 0 0 25px rgba(100, 13, 95, 0.4);
+  }
+}
+
+@keyframes success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes checkmark-draw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
   opacity: 0;
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.7s ease-out forwards;
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
 }
 
 .animate-scale-in {
   animation: scale-in 0.4s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.animate-success {
+  animation: success-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* Premium button - clean white */
+.btn-premium {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium:hover {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+}
+
+.btn-premium:active {
+  transform: translateY(0);
+  background: #e5e5e5;
+}
+
+.btn-premium:disabled {
+  background: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+/* Premium input */
+.input-premium {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.input-premium::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-premium:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.input-premium:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+/* Text animations */
+@keyframes reveal-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-reveal {
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-reveal-fade {
+  animation: reveal-fade 1s ease forwards;
+  opacity: 0;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Logo fix - remove white outline/corners - ULTRA AGGRESSIVE */
+.logo-wrapper {
+  position: relative;
+  isolation: isolate;
+  /* Pure black background to hide any white bleed */
+  background: #000000;
+  /* Tight border radius to match logo */
+  border-radius: 0.75rem;
+  /* Ensure overflow is hidden */
+  overflow: hidden;
+}
+
+.logo-image,
+img[alt="AICE"] {
+  background: transparent !important;
+  mix-blend-mode: normal;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* VERY aggressive clipping - crop 6px from all edges to remove white corners */
+  clip-path: inset(6px round 0.5rem);
+  /* Ultra-tight circular mask - crop edges more aggressively */
+  mask-image: 
+    radial-gradient(ellipse 80% 80% at center, black 85%, transparent 100%),
+    linear-gradient(black, black);
+  -webkit-mask-image: 
+    radial-gradient(ellipse 80% 80% at center, black 85%, transparent 100%),
+    linear-gradient(black, black);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+  /* Filter to darken white pixels and enhance contrast */
+  filter: 
+    contrast(1.3) 
+    brightness(0.85)
+    saturate(1.2);
+  /* Ensure no white bleed */
+  border-radius: 0.75rem;
+  object-fit: cover;
+  object-position: center;
+  /* Force no white background */
+  background-color: transparent !important;
+  /* Scale slightly to crop edges */
+  transform: scale(1.05);
+  /* Additional isolation */
+  isolation: isolate;
+}
+
+/* Success state */
+.success-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }

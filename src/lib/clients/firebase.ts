@@ -10,9 +10,38 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Validate Firebase configuration
+if (typeof window !== "undefined") {
+  const missingVars = Object.entries(firebaseConfig)
+    .filter(([_, value]) => !value || value.includes("your_"))
+    .map(([key]) => key);
+
+  if (missingVars.length > 0) {
+    console.error(
+      "⚠️ Firebase configuration missing! Please set these environment variables:",
+      missingVars
+    );
+    console.error(
+      "📖 See FIREBASE_SETUP.md for instructions"
+    );
+  }
+}
+
 // Initialize Firebase
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const db = getFirestore(app);
+let app;
+let db;
+
+try {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  db = getFirestore(app);
+} catch (error) {
+  console.error("❌ Firebase initialization error:", error);
+  if (typeof window !== "undefined") {
+    console.error(
+      "💡 Make sure you've created .env.local with your Firebase credentials"
+    );
+  }
+}
 
 export { app, db };
 
